@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -30,20 +31,20 @@ namespace Complex_Number_Calculator_GUI
             {
                 var match = Regex.Match(input, @"([-+]?\d*\.?\d+)i([-+]?\d*\.?\d+)");
                 if (!match.Success) throw new ArgumentException("Invalid algebraic format");
-                return new complex(double.Parse(match.Groups[1].Value), double.Parse(match.Groups[2].Value));
+                return new complex(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
             }
             else if (input.Contains("j")) // Algebraický tvar s "j"
             {
                 var match = Regex.Match(input, @"([-+]?\d*\.?\d+)j([-+]?\d*\.?\d+)");
                 if (!match.Success) throw new ArgumentException("Invalid algebraic format");
-                return new complex(double.Parse(match.Groups[1].Value), double.Parse(match.Groups[2].Value));
+                return new complex(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
             }
             else if (input.Contains("<")) // Goniometrický tvar
             {
                 var match = Regex.Match(input, @"([-+]?\d*\.?\d+)<([-+]?\d*\.?\d+)");
                 if (!match.Success) throw new ArgumentException("Invalid polar format");
-                double magnitude = double.Parse(match.Groups[1].Value);
-                double angle = double.Parse(match.Groups[2].Value) * Math.PI / 180; // Převod na radiány
+                double magnitude = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                double angle = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture) * Math.PI / 180; // Převod na radiány
                 return new complex(magnitude * Math.Cos(angle), magnitude * Math.Sin(angle));
             }
             else

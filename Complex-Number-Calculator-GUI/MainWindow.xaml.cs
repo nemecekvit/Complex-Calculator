@@ -27,12 +27,14 @@ namespace Complex_Number_Calculator_GUI
             cmplxNum vysledek3 = cislo1 / cislo2;
             cmplxNum vysledek4 = cislo1 * cislo2;
             cmplxNum vysledek5 = -cislo1;
+            double vysledek6 = cislo1.Abs();
             ResultTextBlock.Text = vysledek.ToString();
             ResultTextBlock2.Text = vysledek1.ToString();
             ResultTextBlock3.Text = vysledek2.ToString();
             ResultTextBlock4.Text = vysledek3.ToString();
             ResultTextBlock5.Text = vysledek4.ToString();
             ResultTextBlock6.Text = vysledek5.ToString();
+            ResultTextBlock7.Text = vysledek6.ToString();
         }
     }
 }

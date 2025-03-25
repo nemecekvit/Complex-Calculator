@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 //Parser using recursive descent
 //https://en.wikipedia.org/wiki/Recursive_descent_parser
-//https://www.youtube.com/watch?v=5g8Q6ZU2wqA
 //  Priority(1 is highest)      Method      Operations
 //          1                   Factor            Parentheses[], Absolute value{}, Unary minus -5
 //          2                   Term            Multiplication*, Division/
@@ -160,11 +158,10 @@ namespace Complex_Number_Calculator_GUI
             // Start parsing from the expression level
             cmplxNum result = Expr();
 
-            // Ensure that we've reached the end of the input
+            // Ensure that end of input is reached
             if (position < exInput.Length)
                 throw new Exception($"Unexpected character '{GetCurrentChar()}' at position {position}");
             return result;
         }
-
     }   
 }

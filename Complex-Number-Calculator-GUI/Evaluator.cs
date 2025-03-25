@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Complex_Number_Calculator_GUI
-{
+{   /// <summary>
+    /// Class for evaluating expressions with complex numbers
+    /// </summary>
     internal class Evaluator
     {
         public static cmplxNum Evaluate(string input)
@@ -21,7 +23,7 @@ namespace Complex_Number_Calculator_GUI
                 Parser parser = new Parser(input);
                 return parser.Parse();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }

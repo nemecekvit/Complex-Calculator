@@ -14,7 +14,6 @@ internal class InputValidator
 
     private static char[] allowerdParenthese = new char[] { '(', ')', '[', ']', '{', '}' };
 
-    
     ///<summary>
     /// Checks if the parentheses in the input string are balanced.
     /// </summary>
@@ -62,7 +61,6 @@ internal class InputValidator
             return new Tuple<int, char?>(input.Length - 1, input[input.Length - 1]);
     }
 
-   
     /// <summary>
     /// Validates the input string for the calculator.
     /// </summary>

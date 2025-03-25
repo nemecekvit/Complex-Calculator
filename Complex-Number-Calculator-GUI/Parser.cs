@@ -59,7 +59,7 @@ namespace Complex_Number_Calculator_GUI
         }
 
         //Handle highest priority operations
-        private int Factor()
+        private cmplxNum Factor()
         {
             // Handle unary minus
             if (GetCurrentChar() == '-')
@@ -71,7 +71,7 @@ namespace Complex_Number_Calculator_GUI
             else if (GetCurrentChar() == '(')
             {
                 Consume(); // Consume '('
-                int result = Expr(); // Parse expression inside parentheses
+                cmplxNum result = Expr(); // Parse expression inside parentheses
                 Match(')'); // Ensure closing ')'
                 return result;
             }
@@ -79,12 +79,12 @@ namespace Complex_Number_Calculator_GUI
             else if (GetCurrentChar() == '{')
             {
                 Consume(); // Consume '{'
-                int result = Math.Abs(Expr()); // Compute absolute value
+                cmplxNum result = cmplxNum.Abs(Expr()); // Compute absolute value
                 Match('}'); // Ensure closing '}'
                 return result;
             }
             // Handle numbers
-            else if (char.IsDigit(GetCurrentChar()))
+            else if (char.IsDigit(GetCurrentChar()) || GetCurrentChar() == '[')
             {
                 return Number();
             }
@@ -94,28 +94,42 @@ namespace Complex_Number_Calculator_GUI
             }
         }
 
-        private int Number()
+        private cmplxNum Number()
         {
-            // Parse a multi-digit number
             StringBuilder sb = new StringBuilder();
-            while (char.IsDigit(GetCurrentChar()))
+            //Solo real number
+            if (char.IsDigit(GetCurrentChar()))
             {
+                while (char.IsDigit(GetCurrentChar()) || GetCurrentChar() == '.')
+                {
+                    sb.Append(GetCurrentChar());
+                    Consume();
+                }
+                return new cmplxNum("[" + sb.ToString() + "i0]");
+            }
+            else
+            {
+                while (GetCurrentChar() != ']')
+                {
+                    sb.Append(GetCurrentChar());
+                    Consume();
+                }
                 sb.Append(GetCurrentChar());
                 Consume();
+                return new cmplxNum(sb.ToString());
             }
-            return int.Parse(sb.ToString()); // Convert parsed digits to an integer
         }
 
         //Hadnle second priority operations
-        private int Term()
+        private cmplxNum Term()
         {
             // Handle multiplication and division
-            int result = Factor();
+            cmplxNum result = Factor();
             while (GetCurrentChar() == '*' || GetCurrentChar() == '/')
             {
                 char op = GetCurrentChar();
                 Consume();
-                int rightSide = Factor();
+                cmplxNum rightSide = Factor();
 
                 // Perform operation
                 if (op == '*')
@@ -127,15 +141,15 @@ namespace Complex_Number_Calculator_GUI
         }
 
         //Handle third priority operations
-        private int Expr()
+        private cmplxNum Expr()
         {
             // Handle addition and subtraction
-            int result = Term();
+            cmplxNum result = Term();
             while (GetCurrentChar() == '+' || GetCurrentChar() == '-')
             {
                 char op = GetCurrentChar();
                 Consume();
-                int right = Term();
+                cmplxNum right = Term();
                 // Perform operation
                 if (op == '+')
                     result += right;
@@ -145,10 +159,10 @@ namespace Complex_Number_Calculator_GUI
             return result;
         }
 
-        public int Parse()
+        public cmplxNum Parse()
         {
             // Start parsing from the expression level
-            int result = Expr();
+            cmplxNum result = Expr();
 
             // Ensure that we've reached the end of the input
             if (position < exInput.Length)

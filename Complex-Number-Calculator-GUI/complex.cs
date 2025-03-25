@@ -67,8 +67,8 @@ namespace Complex_Number_Calculator_GUI
             return false;
         }
 
-        public double Abs() {
-            return Math.Sqrt(real * real + imag * imag);
+        public static complex Abs(complex num) {
+            return new complex(Math.Sqrt(num.real * num.real + num.imag * num.imag), 0.0);
         }
 
         public override String ToString()

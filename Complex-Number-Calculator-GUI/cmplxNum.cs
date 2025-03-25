@@ -107,11 +107,14 @@ namespace Complex_Number_Calculator_GUI
             return Result;
         }
 
-      public double Abs() { 
-            complex cnumA = ParseComplex(num1);
-            double result = cnumA.Abs();
-            return result;
-       }
+      public static cmplxNum Abs(cmplxNum numA) { 
+            complex cnumA = numA.ParseComplex(numA.num1);
+
+            complex result = complex.Abs(cnumA);
+            string str_result = result.ToString();
+            cmplxNum Result = new cmplxNum(str_result);
+            return Result;
+        }
 
         public override string ToString()
         {

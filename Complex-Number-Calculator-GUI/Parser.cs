@@ -21,16 +21,8 @@ namespace Complex_Number_Calculator_GUI
         private int position;
         public Parser(string input)
         {
-            // Remove all white spaces from the input string
-            input = input.Where(c => !Char.IsWhiteSpace(c)).Aggregate("", (current, c) => current + c);
             exInput = input;
             position = 0;
-            // Validate the input string
-            try { InputValidator.ValidateInput(input); }
-            catch (Exception)
-            {
-                throw;
-            }
         }
 
         //Return the current character, unless we've reached the end of the input

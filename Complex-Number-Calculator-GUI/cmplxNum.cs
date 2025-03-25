@@ -106,6 +106,12 @@ namespace Complex_Number_Calculator_GUI
             return Result;
         }
 
+      public double Abs() { 
+            complex cnumA = ParseComplex(num1);
+            double result = cnumA.Abs();
+            return result;
+       }
+
         public override string ToString()
         {
             return $"[{num1}]";

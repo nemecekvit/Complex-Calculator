@@ -116,6 +116,10 @@ namespace Complex_Number_Calculator_GUI
                 }
                 sb.Append(GetCurrentChar());
                 Consume();
+                if(GetCurrentChar() == '\'')
+                {
+                    sb.Append("\'");
+                }
                 return new cmplxNum(sb.ToString());
             }
         }

@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Complex-Number-Calculator-GUI/MainWindow.xaml
+/Complex-Number-Calculator-GUI/MainWindow.xaml.cs

@@ -16,16 +16,39 @@ namespace Complex_Number_Calculator_GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string log = "";
+        private const string defaultInputText = "Please input you expression";
+        public  void Log(string s)
+        {
+            log += s + "\n";
+            tbLog.Text = log;
+        }
+        
         public MainWindow()
         {
             InitializeComponent();
+            tbInputBox.Text = defaultInputText;
+            /*
+            FileManager fileManager = new FileManager();
+            
 
-            double a = double.Parse("12,4");
-            double b = double.Parse("12.4");
+            string ip = "([1i45] + [0i0])*2";
+
+            
+            cmplxNum result = Evaluator.Evaluate(ip);
+            ResultTextBlock.Text = result.ToString();
+            
+            string[] cache= new string[] {result.ToString(),result.ToString(), result.ToString() };
+            fileManager.saveExpressionToCVS(cache);
+
+            string[] cache2 = fileManager.loadSavedExpressionsFromCVS();
+            ResultTextBlock2.Text = cache2[0];
+            ResultTextBlock3.Text = cache2[1];
+            ResultTextBlock4.Text = cache2[2];
+            */
 
 
-            cmplxNum cislo1 = new cmplxNum("[12.5i34]");
-            cmplxNum cislo2 = new cmplxNum("[12.5<34]");
+            /*
             cmplxNum vysledek = cislo1 + cislo2;
             cmplxNum vysledek1 = cislo1 - cislo2;
             cmplxNum vysledek2 = cislo1 * cislo2;
@@ -40,6 +63,63 @@ namespace Complex_Number_Calculator_GUI
             ResultTextBlock5.Text = vysledek4.ToString();
             ResultTextBlock6.Text = vysledek5.ToString();
             ResultTextBlock7.Text = vysledek6.ToString();
+            */
+        }
+
+
+
+        //Input box text change events
+        
+        private void tbInputBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tbInputBox.Text != defaultInputText)
+            {
+                tbInputBox.Foreground = new SolidColorBrush(Colors.Black);
+            }
+            
+        }
+        private void tbInputBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tbInputBox.Text == defaultInputText)
+            {
+                tbInputBox.Text = "";
+                tbInputBox.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+        private void tbInputBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if(string.IsNullOrEmpty(tbInputBox.Text))
+            {
+                tbInputBox.Text = defaultInputText;
+                tbInputBox.Foreground = new SolidColorBrush(Colors.LightGray);
+            }
+        }
+        //Show/Hide log button
+        private void cbShowLog_Click(object sender, RoutedEventArgs e)
+        {
+            if (tbLog.Visibility == Visibility.Visible)
+            {
+                tbLog.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                tbLog.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+            lbResultOutput.Content = "";
+            try
+            {
+                lbResultOutput.Content = Evaluator.Evaluate(tbInputBox.Text).ToString();
+            }
+            catch (Exception f)
+            {
+
+                lbErrorOutput.Content = f.Message;
+            }
+            
         }
     }
 }

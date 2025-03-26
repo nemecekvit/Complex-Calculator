@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Parser using recursive descent
-//https://en.wikipedia.org/wiki/Recursive_descent_parser
-//  Priority(1 is highest)      Method      Operations
-//          1                   Factor            Parentheses[], Absolute value{}, Unary minus -5
+
+//  Priority(1 is highest)      Method          Operations
+//          1                   Factor          Parentheses[], Absolute value{}, Unary minus -5
 //          2                   Term            Multiplication*, Division/
-//          3                   Expression            Addition+, Subtraction-
+//          3                   Expression      Addition+, Subtraction-
 
 namespace Complex_Number_Calculator_GUI
 {

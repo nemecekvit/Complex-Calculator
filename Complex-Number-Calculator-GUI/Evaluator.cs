@@ -15,6 +15,9 @@ namespace Complex_Number_Calculator_GUI
             // Remove all white spaces from the input string
             input = input.Where(c => !Char.IsWhiteSpace(c)).Aggregate("", (current, c) => current + c);
 
+            // Replace variables with their values
+            replaceVariables(ref input);
+
             // Validate the input string
             try 
             { 
@@ -25,8 +28,13 @@ namespace Complex_Number_Calculator_GUI
             }
             catch (Exception e)
             {
-                throw;
+                throw new ArgumentException(e.Message);
             }
+        }
+
+        private static void  replaceVariables(ref string input)
+        {
+
         }
     }
 }

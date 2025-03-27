@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
@@ -10,6 +11,7 @@ namespace Complex_Number_Calculator_GUI
 {
     class FileManager
     {
+        private string saveExpressionsPath = "savedExpressions.csv";
 
         private void checkIfFileExists(string path)
         {
@@ -19,10 +21,18 @@ namespace Complex_Number_Calculator_GUI
             }
         }
 
-        public string[] loadSavedExpressionsFromCVS()
+        public string[] loadLastMemory()
         {
-            string path = "savedExpressions.csv";
+            return loadExpressionsFromCVS(saveExpressionsPath);
+        }
 
+        public void saveToMemory(string[] expressions)
+        {
+            saveExpressionToCVS(saveExpressionsPath, expressions);
+        }
+
+        public string[] loadExpressionsFromCVS(string path)
+        {
             checkIfFileExists(path);
 
             StreamReader reader = new StreamReader(path, Encoding.Default);
@@ -32,10 +42,8 @@ namespace Complex_Number_Calculator_GUI
             return expressions;
       
         }
-        public void saveExpressionToCVS(string[] expression)
+        public void saveExpressionToCVS(string path, string[] expression)
         {
-            string path = "savedExpressions.csv";
-
             checkIfFileExists(path);
 
             StreamWriter writer = new StreamWriter(path, false, Encoding.Default);

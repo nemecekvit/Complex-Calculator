@@ -10,26 +10,30 @@ namespace Complex_Number_Calculator_GUI
     /// </summary>
     internal class Evaluator
     {
+        private static void removeWhiteSpaces(ref string input)
+        {
+            input = input.Where(c => !Char.IsWhiteSpace(c)).Aggregate("", (current, c) => current + c);
+        }
+
         public static cmplxNum Evaluate(string input)
         {
-            // Remove all white spaces from the input string
-            input = input.Where(c => !Char.IsWhiteSpace(c)).Aggregate("", (current, c) => current + c);
 
             // Replace variables with their values
             replaceVariables(ref input);
 
-            // Validate the input string
-            try 
-            { 
-                InputValidator.ValidateInput(input);
+            // Remove all white spaces from the input string
+            removeWhiteSpaces(ref input);
 
-                Parser parser = new Parser(input);
-                return parser.Parse();
-            }
-            catch (Exception e)
-            {
-                throw new ArgumentException(e.Message);
-            }
+            // Validate the input string
+            validateInput(input);
+
+            Parser parser = new Parser(input);
+            return parser.Parse();
+        }
+
+        public static void validateInput(string input) {
+            removeWhiteSpaces(ref input);
+            InputValidator.ValidateInput(input);
         }
 
         private static void  replaceVariables(ref string input)

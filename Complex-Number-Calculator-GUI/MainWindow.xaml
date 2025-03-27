@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Complex_Number_Calculator_GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Closing="Window_Closing" 
+        >
+        
     <Grid>
         <TextBox x:Name="tbInputBox" Height="31" Margin="10,22,10,0" TextWrapping="Wrap" Text="Testovaci text" VerticalAlignment="Top" GotFocus="tbInputBox_GotFocus" TextChanged="tbInputBox_TextChanged" Foreground="LightGray" LostFocus="tbInputBox_LostFocus"/>
         <Label x:Name="lbErrorOutput" Content="Label" Height="29" Margin="10,58,10,0" VerticalAlignment="Top"/>

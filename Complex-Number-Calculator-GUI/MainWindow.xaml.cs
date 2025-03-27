@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Complex_Number_Calculator_GUI 
+namespace Complex_Number_Calculator_GUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -18,12 +18,12 @@ namespace Complex_Number_Calculator_GUI
     {
         private string log = "";
         private const string defaultInputText = "Please input you expression";
-        public  void Log(string s)
+        public void Log(string s)
         {
             log += s + "\n";
             tbLog.Text = log;
         }
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -69,14 +69,14 @@ namespace Complex_Number_Calculator_GUI
 
 
         //Input box text change events
-        
+
         private void tbInputBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (tbInputBox.Text != defaultInputText)
             {
                 tbInputBox.Foreground = new SolidColorBrush(Colors.Black);
             }
-            
+
         }
         private void tbInputBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -88,7 +88,7 @@ namespace Complex_Number_Calculator_GUI
         }
         private void tbInputBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(string.IsNullOrEmpty(tbInputBox.Text))
+            if (string.IsNullOrEmpty(tbInputBox.Text))
             {
                 tbInputBox.Text = defaultInputText;
                 tbInputBox.Foreground = new SolidColorBrush(Colors.LightGray);
@@ -119,7 +119,25 @@ namespace Complex_Number_Calculator_GUI
 
                 lbErrorOutput.Content = f.Message;
             }
-            
+
         }
+        /* Window closing event for possible data loss prevention
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBox.Show("Closing called");
+
+            // If data is dirty, notify user and ask for a response
+            if (true)
+            {
+                string msg = "Data is dirty. Close without saving?";
+                MessageBoxResult result =MessageBox.Show(msg,"Data App",MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    // If user doesn't want to close, cancel closure
+                    e.Cancel = true;
+                }
+            }
+        }
+        */
     }
 }

@@ -23,11 +23,12 @@ namespace Complex_Number_Calculator_GUI
             log += s + "\n";
             tbLog.Text = log;
         }
-
+        private FrontBackConnector frontBackConnector;
         public MainWindow()
         {
             InitializeComponent();
             tbInputBox.Text = defaultInputText;
+            frontBackConnector = new FrontBackConnector(this);
             /*
             FileManager fileManager = new FileManager();
             

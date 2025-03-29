@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,66 +20,50 @@ namespace Complex_Number_Calculator_GUI
     {
         private string log = "";
         private const string defaultInputText = "Please input you expression";
+
+        // Timer for validating input after user stops typing
+        static int timerInterval = 2000;
+        System.Threading.Timer timer = null;
+
+        // FrontBackConnector for connecting the GUI with the backend
+        private FrontBackConnector frontBackConnector;
         public void Log(string s)
         {
             log += s + "\n";
             tbLog.Text = log;
         }
-        private FrontBackConnector frontBackConnector;
+       
         public MainWindow()
         {
             InitializeComponent();
             tbInputBox.Text = defaultInputText;
             frontBackConnector = new FrontBackConnector(this);
-            /*
-            FileManager fileManager = new FileManager();
-            
-
-            string ip = "([1i45] + [0i0])*2";
-
-            
-            cmplxNum result = Evaluator.Evaluate(ip);
-            ResultTextBlock.Text = result.ToString();
-            
-            string[] cache= new string[] {result.ToString(),result.ToString(), result.ToString() };
-            fileManager.saveExpressionToCVS(cache);
-
-            string[] cache2 = fileManager.loadSavedExpressionsFromCVS();
-            ResultTextBlock2.Text = cache2[0];
-            ResultTextBlock3.Text = cache2[1];
-            ResultTextBlock4.Text = cache2[2];
-            */
-
-
-            /*
-            cmplxNum vysledek = cislo1 + cislo2;
-            cmplxNum vysledek1 = cislo1 - cislo2;
-            cmplxNum vysledek2 = cislo1 * cislo2;
-            cmplxNum vysledek3 = cislo1 / cislo2;
-            cmplxNum vysledek4 = cislo1 * cislo2;
-            cmplxNum vysledek5 = -cislo1;
-            double vysledek6 = cislo1.Abs();
-            ResultTextBlock.Text = vysledek.ToString();
-            ResultTextBlock2.Text = vysledek1.ToString();
-            ResultTextBlock3.Text = vysledek2.ToString();
-            ResultTextBlock4.Text = vysledek3.ToString();
-            ResultTextBlock5.Text = vysledek4.ToString();
-            ResultTextBlock6.Text = vysledek5.ToString();
-            ResultTextBlock7.Text = vysledek6.ToString();
-            */
         }
 
+        //--------------------------------------------------------------------------------
+        //Setters for error and result messages
+        public void SetErrorMessage(string message)
+        {
+            lbErrorOutput.Content = message;
+        }
+        public void SetResultMessage(string message)
+        {
+            lbResultOutput.Content = message;
+        }
 
-
+        //--------------------------------------------------------------------------------
         //Input box text change events
-
         private void tbInputBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            //Color change
             if (tbInputBox.Text != defaultInputText)
             {
                 tbInputBox.Foreground = new SolidColorBrush(Colors.Black);
             }
 
+            //Timer for validating input after user stops typing
+            DisposeTimer();
+            timer = new System.Threading.Timer(TimerElapsed, null, timerInterval, timerInterval);
         }
         private void tbInputBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -95,6 +81,45 @@ namespace Complex_Number_Calculator_GUI
                 tbInputBox.Foreground = new SolidColorBrush(Colors.LightGray);
             }
         }
+
+        //--------------------------------------------------------------------------------
+        //Valide input string after user stoppes typing
+        //Must execute in the main thread
+        public void ValidateInput()
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                if (tbInputBox.Text == defaultInputText)
+                    SetErrorMessage("");
+
+                try
+                {
+                    frontBackConnector.validateExpression(tbInputBox.Text);
+                    SetErrorMessage("Syntax is in order");
+                }
+                catch (System.Exception e)
+                {
+                    SetErrorMessage(e.Message);
+                }
+            }
+            ));
+        }
+        private void TimerElapsed(Object obj)
+        {
+            ValidateInput();
+            DisposeTimer();
+        }
+
+        private void DisposeTimer()
+        {
+            if (timer != null)
+            {
+                timer.Dispose();
+                timer = null;
+            }
+        }
+
+        //--------------------------------------------------------------------------------
         //Show/Hide log button
         private void cbShowLog_Click(object sender, RoutedEventArgs e)
         {
@@ -122,9 +147,10 @@ namespace Complex_Number_Calculator_GUI
             }
 
         }
-        /* Window closing event for possible data loss prevention
+        // Window closing event for possible data loss prevention
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            /*
             MessageBox.Show("Closing called");
 
             // If data is dirty, notify user and ask for a response
@@ -138,7 +164,8 @@ namespace Complex_Number_Calculator_GUI
                     e.Cancel = true;
                 }
             }
+            */
         }
-        */
+
     }
-}
+    }

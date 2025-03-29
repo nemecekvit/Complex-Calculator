@@ -14,9 +14,21 @@ namespace Complex_Number_Calculator_GUI
         {
             input = input.Where(c => !Char.IsWhiteSpace(c)).Aggregate("", (current, c) => current + c);
         }
-
+        
+        ///<summary>
+        /// Evaluates a string expression containing complex numbers.
+        /// </summary>
+        /// <param name="input">The input string containing the expression to evaluate.</param>
+        /// <returns>A cmplxNum object representing the result of the evaluation.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the input string is null or empty.</exception>
+        /// <exception cref="FormatException">Thrown when the input string is not in a valid format.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the input string contains invalid operations or variables.</exception>
         public static cmplxNum Evaluate(string input)
         {
+            if (string.IsNullOrEmpty(input))
+            {
+                throw new ArgumentNullException(nameof(input), "Input string cannot be null or empty.");
+            }
 
             // Replace variables with their values
             replaceVariables(ref input);

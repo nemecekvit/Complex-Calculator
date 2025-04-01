@@ -133,12 +133,13 @@ namespace Complex_Number_Calculator_GUI
             }
         }
 
+        //--------------------------------------------------------------------------------
         private void btnTest_Click(object sender, RoutedEventArgs e)
         {
             lbResultOutput.Content = "";
             try
             {
-                lbResultOutput.Content = Evaluator.Evaluate(tbInputBox.Text).ToString();
+                lbResultOutput.Content = frontBackConnector.evaluateExpression(tbInputBox.Text);
             }
             catch (Exception f)
             {
@@ -147,6 +148,18 @@ namespace Complex_Number_Calculator_GUI
             }
 
         }
+        //--------------------------------------------------------------------------------
+        //Memory
+        public void showMemory(string[] memory)
+        {
+            //TODO: Memory is array of strings with lenght 3
+            //      Implement this method to show memory in the GUI
+        }
+
+        //TODO: Implement that current result is saved to selected memory a,b,c
+
+
+
         // Window closing event for possible data loss prevention
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -168,4 +181,4 @@ namespace Complex_Number_Calculator_GUI
         }
 
     }
-    }
+}

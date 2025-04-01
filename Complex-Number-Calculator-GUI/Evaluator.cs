@@ -10,7 +10,8 @@ namespace Complex_Number_Calculator_GUI
     /// </summary>
     internal class Evaluator
     {
-        private static void removeWhiteSpaces(ref string input)
+        public string[] currentMemory = new string[3];
+        private void removeWhiteSpaces(ref string input)
         {
             input = input.Where(c => !Char.IsWhiteSpace(c)).Aggregate("", (current, c) => current + c);
         }
@@ -23,7 +24,7 @@ namespace Complex_Number_Calculator_GUI
         /// <exception cref="ArgumentNullException">Thrown when the input string is null or empty.</exception>
         /// <exception cref="FormatException">Thrown when the input string is not in a valid format.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the input string contains invalid operations or variables.</exception>
-        public static cmplxNum Evaluate(string input)
+        public cmplxNum Evaluate(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -31,7 +32,7 @@ namespace Complex_Number_Calculator_GUI
             }
 
             // Replace variables with their values
-            replaceVariables(ref input);
+            replaceVariables(ref input, currentMemory);
 
             // Remove all white spaces from the input string
             removeWhiteSpaces(ref input);
@@ -43,14 +44,16 @@ namespace Complex_Number_Calculator_GUI
             return parser.Parse();
         }
 
-        public static void validateInput(string input) {
+        public void validateInput(string input) {
             removeWhiteSpaces(ref input);
             InputValidator.ValidateInput(input);
         }
 
-        private static void  replaceVariables(ref string input)
+        private void replaceVariables(ref string input, string[] expressions)
         {
-
+            input = input.Replace("a", expressions[0]);
+            input = input.Replace("b", expressions[1]);
+            input = input.Replace("c", expressions[2]);
         }
     }
 }

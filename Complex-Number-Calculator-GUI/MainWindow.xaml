@@ -5,21 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Complex_Number_Calculator_GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Closing="Window_Closing" 
+        >
+        
     <Grid>
-        <TextBlock x:Name="ResultTextBlock" Grid.Row="2" FontSize="18" TextWrapping="Wrap"
-                   VerticalAlignment="Top"/>
-        <TextBlock x:Name="ResultTextBlock2" FontSize="18" TextWrapping="Wrap"
-           VerticalAlignment="Top" Margin="0,29,0,0"/>
-        <TextBlock x:Name="ResultTextBlock3" FontSize="18" TextWrapping="Wrap"
-   VerticalAlignment="Top" Margin="0,58,0,0"/>
-        <TextBlock x:Name="ResultTextBlock4" FontSize="18" TextWrapping="Wrap"
-   VerticalAlignment="Top" Margin="0,87,0,0"/>
-        <TextBlock x:Name="ResultTextBlock5" FontSize="18" TextWrapping="Wrap"
-   VerticalAlignment="Top" Margin="0,116,0,0"/>
-        <TextBlock x:Name="ResultTextBlock6" FontSize="18" TextWrapping="Wrap"
-            VerticalAlignment="Top" Margin="0,145,0,0"/>
-        <TextBlock x:Name="ResultTextBlock7" FontSize="18" TextWrapping="Wrap"
-    VerticalAlignment="Top" Margin="0,174,0,0"/>
-    </Grid> 
+        <TextBox x:Name="tbInputBox" Height="31" Margin="10,22,10,0" TextWrapping="Wrap" Text="Testovaci text" VerticalAlignment="Top" GotFocus="tbInputBox_GotFocus" TextChanged="tbInputBox_TextChanged" Foreground="LightGray" LostFocus="tbInputBox_LostFocus"/>
+        <Label x:Name="lbErrorOutput" Content="Label" Height="29" Margin="10,58,10,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbResultOutput" Content="Label" Height="29" Margin="10,92,10,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="cbShowLog" Content="Show Log" Height="18" Margin="714,126,10,0" VerticalAlignment="Top" IsChecked="True" Click="cbShowLog_Click"/>
+        <TextBox x:Name="tbLog" Height="275" Margin="392,149,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button x:Name="btnTest" Content="Button" HorizontalAlignment="Left" Height="43" Margin="30,174,0,0" VerticalAlignment="Top" Width="94" Click="btnTest_Click"/>
+
+    </Grid>
 </Window>

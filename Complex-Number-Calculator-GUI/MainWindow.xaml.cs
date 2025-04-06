@@ -19,7 +19,7 @@ namespace Complex_Number_Calculator_GUI
         public MainWindow()
         {
             InitializeComponent();
-            cmplxNum cislo1 = new cmplxNum("[-12.5i34]");
+            cmplxNum cislo1 = new cmplxNum("[12.5i34]");
             cmplxNum cislo2 = new cmplxNum("[12.5<34]");
             cmplxNum vysledek = cislo1 + cislo2;
             cmplxNum vysledek1 = cislo1 - cislo2;

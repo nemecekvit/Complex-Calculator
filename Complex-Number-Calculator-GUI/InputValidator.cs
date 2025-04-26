@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 internal class InputValidator
 {
     private static char[] allowedCharacters = new char[] 
-            { '+','-','*','/','{','}', '\'','(',')','[',']','a','b','c','i','j','<','1','2','3','4','5','6','7','8','9','0'};
+            { '+','-','*','/','{','}','.' ,',','\'','(',')','[',']','a','b','c','i','j','<','1','2','3','4','5','6','7','8','9','0'};
 
     private static char[] allowerdParenthese = new char[] { '(', ')', '[', ']', '{', '}' };
 

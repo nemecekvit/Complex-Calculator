@@ -110,8 +110,11 @@ namespace Complex_Number_Calculator_GUI
             Dispatcher.Invoke(new Action(() =>
             {
                 if (tbInputBox.Text == defaultInputText)
+                {
                     SetErrorMessage("");
-
+                    return;
+                }
+                    
                 try
                 {
                     frontBackConnector.validateExpression(tbInputBox.Text);

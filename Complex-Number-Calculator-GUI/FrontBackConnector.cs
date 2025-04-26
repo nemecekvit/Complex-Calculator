@@ -18,15 +18,6 @@ namespace Complex_Number_Calculator_GUI
         public FrontBackConnector(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
-            try
-            {
-                loadedMemory = fileManager.loadLastMemory();
-                copyMemory(loadedMemory, currentMemory);
-            }
-            catch (Exception e)
-            {
-                mainWindow.SetErrorMessage($"Can't load memory ({e.Message})"); 
-            }
         }
 
         public string evaluateExpression(string expression)

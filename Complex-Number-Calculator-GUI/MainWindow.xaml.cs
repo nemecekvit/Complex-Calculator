@@ -326,7 +326,7 @@ namespace Complex_Number_Calculator_GUI
             try 
             {
                 loadedMemory = fileManager.loadLastMemory();
-       
+
                 for (int i = 0; i < 3; i++) {
                     loadedMemory[i] = loadedMemory[i].Where(c => !Char.IsWhiteSpace(c)).Aggregate("", (current, c) => current + c); //Remove whitespace
                     memoryManager.Save(i + 1, loadedMemory[i]);

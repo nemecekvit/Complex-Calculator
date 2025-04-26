@@ -31,12 +31,19 @@ namespace Complex_Number_Calculator_GUI
         // FrontBackConnector for connecting the GUI with the backend
         private FrontBackConnector frontBackConnector;
         private memoryManager memoryManager = new memoryManager();
+        private FileManager fileManager = new FileManager();
+
+        private string[] loadedMemory = new string[3];
+        private string[] currentMemory = new string[3];
+
 
         public MainWindow()
         {
             InitializeComponent();
             tbInputBox.Text = defaultInputText;
             frontBackConnector = new FrontBackConnector(this);
+
+            loadMemoryFromFile();
         }
 
         // Theme Toggle
@@ -250,7 +257,7 @@ namespace Complex_Number_Calculator_GUI
             else
             {
                 memoryManager.Save(1, lbResultOutput.Content.ToString());
-                lbActiveM1.Content = "M1";
+                lbActiveM1.Content = lbResultOutput.Content.ToString();
             }
         }
 
@@ -274,7 +281,7 @@ namespace Complex_Number_Calculator_GUI
             else
             {
                 memoryManager.Save(2, lbResultOutput.Content.ToString());
-                lbActiveM2.Content = "M2";
+                lbActiveM2.Content = lbResultOutput.Content.ToString();
             }
         }
 
@@ -298,7 +305,7 @@ namespace Complex_Number_Calculator_GUI
             else
             {
                 memoryManager.Save(3, lbResultOutput.Content.ToString());
-                lbActiveM3.Content = "M3";
+                lbActiveM3.Content = lbResultOutput.Content.ToString();
             }
         }
 
@@ -313,39 +320,90 @@ namespace Complex_Number_Calculator_GUI
             lbActiveM3.Content = "";
         }
 
+        //--------------------------------------------------------------------------------
+        //Load memory from file on start
+        private void loadMemoryFromFile() {
+            try 
+            {
+                loadedMemory = fileManager.loadLastMemory();
+       
+                for (int i = 0; i < 3; i++) {
+                    loadedMemory[i] = loadedMemory[i].Where(c => !Char.IsWhiteSpace(c)).Aggregate("", (current, c) => current + c); //Remove whitespace
+                    memoryManager.Save(i + 1, loadedMemory[i]);
+                }
+
+                lbActiveM1.Content = loadedMemory[0];
+                lbActiveM2.Content = loadedMemory[1];
+                lbActiveM3.Content = loadedMemory[2];
+
+            }
+            catch (Exception e)
+            {
+                lbErrorOutput.Content = e.Message;
+            } 
+        }
+
+        private void saveMemoryToFile()
+        {
+            try
+            {
+                fileManager.saveToMemory(currentMemory);
+            }
+            catch (Exception e)
+            {
+                lbErrorOutput.Content = e.Message;
+            }
+        }
+
+
         //TODO: Implement that current result is saved to selected memory a,b,c
 
 
 
         // Window closing event for possible data loss prevention
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        public bool compareMemory(string[] mem1, string[] mem2)
         {
-            /*
-            MessageBox.Show("Closing called");
-
-            // If data is dirty, notify user and ask for a response
-            if (true)
+            for (int i = 0; i < mem1.Length; i++)
             {
-                string msg = "Data is dirty. Close without saving?";
-                MessageBoxResult result =MessageBox.Show(msg,"Data App",MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
+                if (mem1[i] != mem2[i])
                 {
-                    // If user doesn't want to close, cancel closure
-                    e.Cancel = true;
+                    return false;
                 }
             }
-            */
+            return true;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                currentMemory[i] = memoryManager.Load(i + 1);
+            }
+
+            if(compareMemory(currentMemory, loadedMemory))
+            {
+                saveMemoryToFile();
+            }
+            else
+            {
+                string msg = "Memory has changed. Do you want to save changes?";
+                MessageBoxResult result = MessageBox.Show(msg, "Data App", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    saveMemoryToFile();
+                }
+            }
         }
 
         private void cbShowLog_Checked(object sender, RoutedEventArgs e)
         {
            LogBorder.Height = 150; // Bez animací
-       }
+        }
 
         private void cbShowLog_Unchecked(object sender, RoutedEventArgs e)
-      {
+        {
             LogBorder.Height = 0;
-       }
+        }
 
-  }
+    }
 }

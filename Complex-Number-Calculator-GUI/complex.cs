@@ -73,7 +73,7 @@ namespace Complex_Number_Calculator_GUI
 
         public override String ToString()
         {
-            return $"[{real}i{imag}]";
+            return $"[{real:0.####}i{imag:0.####}]";
         }
     }
 }

@@ -41,17 +41,7 @@ namespace Complex_Number_Calculator_GUI
             evaluator.validateInput(expression);
         }
             
-        public bool compareMemory(string[] memory)
-        {
-            for (int i = 0; i < memory.Length; i++)
-            {
-                if (memory[i] != loadedMemory[i])
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+        
         private void copyMemory(string[] source, string[] destination)
         {
             for (int i = 0; i < source.Length; i++)

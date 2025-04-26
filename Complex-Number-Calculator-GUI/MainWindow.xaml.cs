@@ -1,4 +1,5 @@
-﻿using System.Reflection.Emit;
+﻿using System.Buffers;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
@@ -7,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -19,7 +21,8 @@ namespace Complex_Number_Calculator_GUI
     public partial class MainWindow : Window
     {
         private string log = "";
-        private const string defaultInputText = "Please input you expression";
+        private const string defaultInputText = "";
+        private bool isDarkTheme = true;
 
         // Timer for validating input after user stops typing
         static int timerInterval = 2000;
@@ -27,17 +30,34 @@ namespace Complex_Number_Calculator_GUI
 
         // FrontBackConnector for connecting the GUI with the backend
         private FrontBackConnector frontBackConnector;
-        public void Log(string s)
-        {
-            log += s + "\n";
-            tbLog.Text = log;
-        }
-       
+        private memoryManager memoryManager = new memoryManager();
+
         public MainWindow()
         {
             InitializeComponent();
             tbInputBox.Text = defaultInputText;
             frontBackConnector = new FrontBackConnector(this);
+        }
+
+        // Theme Toggle
+        private void BtnThemeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            var app = Application.Current;
+            app.Resources.MergedDictionaries.Clear();
+
+            if (isDarkTheme)
+            {
+                app.Resources.MergedDictionaries.Add(
+                    new ResourceDictionary { Source = new Uri("Themes/LightTheme.xaml", UriKind.Relative) });
+            }
+            else
+            {
+                app.Resources.MergedDictionaries.Add(
+                    new ResourceDictionary { Source = new Uri("Themes/DarkTheme.xaml", UriKind.Relative) });
+            }
+
+            isDarkTheme = !isDarkTheme;
+            UpdateLayout();
         }
 
         //--------------------------------------------------------------------------------
@@ -120,26 +140,23 @@ namespace Complex_Number_Calculator_GUI
         }
 
         //--------------------------------------------------------------------------------
-        //Show/Hide log button
-        private void cbShowLog_Click(object sender, RoutedEventArgs e)
-        {
-            if (tbLog.Visibility == Visibility.Visible)
-            {
-                tbLog.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                tbLog.Visibility = Visibility.Visible;
-            }
-        }
+
 
         //--------------------------------------------------------------------------------
-        private void btnTest_Click(object sender, RoutedEventArgs e)
+        bool firstEntry = true;
+        private void btnCalc_Click(object sender, RoutedEventArgs e)
         {
             lbResultOutput.Content = "";
             try
             {
                 lbResultOutput.Content = frontBackConnector.evaluateExpression(tbInputBox.Text);
+                if (firstEntry == true) { 
+                tbLog.Text = tbLog.Text + tbInputBox.Text + " = " + frontBackConnector.evaluateExpression(tbInputBox.Text);
+                firstEntry = false;
+                } else
+                {
+                    tbLog.Text = tbLog.Text + "\n" + tbInputBox.Text + " = " + frontBackConnector.evaluateExpression(tbInputBox.Text);
+                }
             }
             catch (Exception f)
             {
@@ -149,11 +166,148 @@ namespace Complex_Number_Calculator_GUI
 
         }
         //--------------------------------------------------------------------------------
-        //Memory
-        public void showMemory(string[] memory)
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Memory is array of strings with lenght 3
-            //      Implement this method to show memory in the GUI
+            try
+            {
+                tbInputBox.Text = tbInputBox.Text + "+";
+            }
+            catch (Exception f)
+            {
+
+                lbErrorOutput.Content = f.Message;
+            }
+
+        }
+        //--------------------------------------------------------------------------------
+        private void btnMin_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                tbInputBox.Text = tbInputBox.Text + "-";
+            }
+            catch (Exception f)
+            {
+
+                lbErrorOutput.Content = f.Message;
+            }
+
+        }
+        //--------------------------------------------------------------------------------
+        private void btnSub_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                tbInputBox.Text = tbInputBox.Text + "*";
+            }
+            catch (Exception f)
+            {
+
+                lbErrorOutput.Content = f.Message;
+            }
+
+        }
+        //--------------------------------------------------------------------------------
+        private void btnDiv_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                tbInputBox.Text = tbInputBox.Text + "/";
+            }
+            catch (Exception f)
+            {
+
+                lbErrorOutput.Content = f.Message;
+            }
+
+        }
+        //--------------------------------------------------------------------------------
+        private void btnInsertRiI_Click(object sender, RoutedEventArgs e)
+        {
+            tbInputBox.Text += ComplexNumberHelper.FormatRiI(tbA.Text, tbB.Text);
+        }
+
+        private void btnInsertRjI_Click(object sender, RoutedEventArgs e)
+        {
+            tbInputBox.Text += ComplexNumberHelper.FormatRjI(tbA.Text, tbB.Text);
+        }
+
+        private void btnInsertPolar_Click(object sender, RoutedEventArgs e)
+        {
+            tbInputBox.Text += ComplexNumberHelper.FormatPolar(tbA.Text, tbB.Text);
+        }
+        //--------------------------------------------------------------------------------
+        //Memory
+        private void btnSaveM1_Click(object sender, RoutedEventArgs e)
+        {
+            if (lbResultOutput.Content == "")
+            {
+                lbErrorOutput.Content = "There is nothing to save in memory.";
+            }
+            else
+            {
+                memoryManager.Save(1, lbResultOutput.Content.ToString());
+                lbActiveM1.Content = "M1";
+            }
+        }
+
+        private void btnLoadM1_Click(object sender, RoutedEventArgs e)
+        {
+            tbInputBox.Text += memoryManager.Load(1);
+        }
+
+        private void btnClearM1_Click(object sender, RoutedEventArgs e)
+        {
+            memoryManager.Clear(1);
+            lbActiveM1.Content = "";
+        }
+
+        private void btnSaveM2_Click(object sender, RoutedEventArgs e)
+        {
+            if (lbResultOutput.Content == "")
+            {
+                lbErrorOutput.Content = "There is nothing to save in memory.";
+            }
+            else
+            {
+                memoryManager.Save(2, lbResultOutput.Content.ToString());
+                lbActiveM2.Content = "M2";
+            }
+        }
+
+        private void btnLoadM2_Click(object sender, RoutedEventArgs e)
+        {
+            tbInputBox.Text += memoryManager.Load(2);
+        }
+
+        private void btnClearM2_Click(object sender, RoutedEventArgs e)
+        {
+            memoryManager.Clear(2);
+            lbActiveM2.Content = "";
+        }
+
+        private void btnSaveM3_Click(object sender, RoutedEventArgs e)
+        {
+            if (lbResultOutput.Content == "")
+            {
+                lbErrorOutput.Content = "There is nothing to save in memory.";
+            }
+            else
+            {
+                memoryManager.Save(3, lbResultOutput.Content.ToString());
+                lbActiveM3.Content = "M3";
+            }
+        }
+
+        private void btnLoadM3_Click(object sender, RoutedEventArgs e)
+        {
+            tbInputBox.Text += memoryManager.Load(3);
+        }
+
+        private void btnClearM3_Click(object sender, RoutedEventArgs e)
+        {
+            memoryManager.Clear(3);
+            lbActiveM3.Content = "";
         }
 
         //TODO: Implement that current result is saved to selected memory a,b,c
@@ -180,5 +334,15 @@ namespace Complex_Number_Calculator_GUI
             */
         }
 
-    }
+        private void cbShowLog_Checked(object sender, RoutedEventArgs e)
+        {
+           LogBorder.Height = 150; // Bez animací
+       }
+
+        private void cbShowLog_Unchecked(object sender, RoutedEventArgs e)
+      {
+            LogBorder.Height = 0;
+       }
+
+  }
 }

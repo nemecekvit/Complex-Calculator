@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.IO.Enumeration;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -355,12 +356,6 @@ namespace Complex_Number_Calculator_GUI
             }
         }
 
-
-        //TODO: Implement that current result is saved to selected memory a,b,c
-
-
-
-        // Window closing event for possible data loss prevention
         public bool compareMemory(string[] mem1, string[] mem2)
         {
             for (int i = 0; i < mem1.Length; i++)
@@ -394,7 +389,29 @@ namespace Complex_Number_Calculator_GUI
                 }
             }
         }
+        //--------------------------------------------------------------------------------
+        //Load expression from file
+        private string [] loadExpressionsFromFile()
+        {
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.FileName = "Document"; // Default file name
+            dialog.DefaultExt = ".txt"; // Default file extension
+            dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
 
+            // Show save file dialog box
+            bool? result = dialog.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dialog.FileName;
+                return fileManager.loadExpressionsFromCVS(filename);
+            }
+            return null;
+        }
+
+        //--------------------------------------------------------------------------------
         private void cbShowLog_Checked(object sender, RoutedEventArgs e)
         {
            LogBorder.Height = 150; // Bez animací

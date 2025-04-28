@@ -24,6 +24,8 @@ namespace Complex_Number_Calculator_GUI
 
         }
 
+
+
         // Method for recognizing format of inputed complex numbers and conversion of gonimetric c. num to algebraic
         private complex ParseComplex(string input)
         {

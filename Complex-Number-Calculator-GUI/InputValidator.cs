@@ -77,7 +77,7 @@ internal class InputValidator
         {
             if (!allowedCharacters.Contains(input[i]))
             {
-                throw new FormatException(string.Format("Invalid characte: '{0}' found at index: {1}", input[i], i));
+                throw new FormatException(string.Format("Invalid characte: '{0}' found at index: {1}haloo", input[i], i));
             }
         }
 

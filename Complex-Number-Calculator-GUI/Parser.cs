@@ -109,7 +109,9 @@ namespace Complex_Number_Calculator_GUI
                 if(GetCurrentChar() == '\'')
                 {
                     sb.Append("\'");
+                    Consume();
                 }
+                
                 return new cmplxNum(sb.ToString());
             }
         }

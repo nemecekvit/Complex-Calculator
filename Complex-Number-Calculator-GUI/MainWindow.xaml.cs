@@ -438,6 +438,5 @@ namespace Complex_Number_Calculator_GUI
                 tbInputBox.Text = selectedExpression;
             }
         }
-
     }
 }

@@ -393,10 +393,10 @@ namespace Complex_Number_Calculator_GUI
         //Load expression from file
         private string [] loadExpressionsFromFile()
         {
-            var dialog = new Microsoft.Win32.SaveFileDialog();
+            var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.FileName = "Document"; // Default file name
             dialog.DefaultExt = ".txt"; // Default file extension
-            dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+            dialog.Filter = "Text documents|*.txt"; // Filter files by extension
 
             // Show save file dialog box
             bool? result = dialog.ShowDialog();
@@ -420,6 +420,23 @@ namespace Complex_Number_Calculator_GUI
         private void cbShowLog_Unchecked(object sender, RoutedEventArgs e)
         {
             LogBorder.Height = 0;
+        }
+
+        private void btnLoadExpressions_Click(object sender, RoutedEventArgs e)
+        {
+            var expressions = loadExpressionsFromFile();
+            if (expressions != null)
+            {
+                cbExpressions.ItemsSource = expressions;
+            }
+        }
+
+        private void cbExpressions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbExpressions.SelectedItem is string selectedExpression)
+            {
+                tbInputBox.Text = selectedExpression;
+            }
         }
 
     }
